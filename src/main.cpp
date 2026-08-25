@@ -7,14 +7,13 @@
   #include "simulation/Serial_Sim.h"
 #else
   #include "Adafruit_LSM6DSOX.h"
-  #include "Adafruit_LIS3MDL.h"
+  #include "Adafruit_LIS2MDL.h"
   #include <Async_BMP3XX.h>
 #endif
 
-#include "FlashDriver.h"
 #include <Adafruit_Sensor.h>
 #include "pins.h"
-#include "UARTCommandHandler.h"
+#include "include/Avionics/includeUARTCommandHandler.h"
 
 #include "data_handling/SensorDataHandler.h"
 #include "data_handling/DataSaverSPI.h"

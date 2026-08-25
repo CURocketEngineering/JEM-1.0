@@ -1,3 +1,6 @@
 [submodule "lib/Avionics"]
 	path = lib/Avionics
 	url = https://github.com/CURocketEngineering/Avionics.git
+[submodule "include/Avionics"]
+	path = include/Avionics
+	url = https://github.com/CURocketEngineering/Avionics.git
