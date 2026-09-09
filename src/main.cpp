@@ -13,9 +13,9 @@
 #endif
 
 // if we are a PCB JEM, otherwise just using martha stuff
-#ifdef PCB_JEM
-  #include "SparkFun u-blox GNSS v3"
-#endif
+// #ifdef PCB_JEM
+//   // #include "Bolder_BMI088"
+// #endif
 
 #include <Adafruit_Sensor.h>
 #include "pins.h"

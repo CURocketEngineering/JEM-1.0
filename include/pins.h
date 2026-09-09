@@ -11,18 +11,19 @@
 
 // Sensors. Barometer, altimeter, and magnetometer
 #define SENSOR_BARO_CS PB_14
-#define SENSOR_LSM_CS PE3
-#define SENSOR_LIS_CS PE4
+#define SENSOR_LSM_CS PE_3
+#define SENSOR_LIS_CS PE_4
 
 #define FLASH_CS PB5 // Note: this is W250 now
 
 #define BUZZER_PIN PA1
+#define ADC_VOLTAGE PA0 // double check this one
 
 // For the Adafruit SPI Flash
 #define EXTERNAL_FLASH_USE_CS PB5
 #define EXTERNAL_FLASH_USE_SPI SPI
 
-#endif // PCB_MARTHA
+#endif // end PCB_MARTHA
 
 #ifdef BB_MARTHA
 
@@ -39,7 +40,7 @@
 #define EXTERNAL_FLASH_USE_CS PB1
 #define EXTERNAL_FLASH_USE_SPI SPI
 
-#endif // BB_MARTHA pins 
+#endif // end BB_MARTHA pins 
  
 #ifdef PCB_JEM // sets pins for additional JEM sensors if required
 
@@ -50,12 +51,15 @@
 
 // Sensors. MS5607, BMI, and KX are new
 #define SENSOR_MS5607_CS PB_15
-#define SENSOR_BMI_G_CS PE0
-#define SENSOR_BMI_A_CS PE1 
-#define SENSOR_KX_CS PE2
+#define SENSOR_BMI_G_CS PE_0
+#define SENSOR_BMI_A_CS PE_1 
+#define SENSOR_KX_CS PE_2
 
 #define LED_RED PE_12
 #define LED_GREEN PE_13
 #define LED_BLUE PE_14
+#define DEBUG_LED PE_12 // Reusing definition in order to allow us to more greatly use old MARTHA code
 
 #endif // end JEM
+
+#endif
