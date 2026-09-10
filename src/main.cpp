@@ -48,8 +48,11 @@ uint32_t start_time_s = 0;
 Adafruit_LSM6DSOX sox;
 Adafruit_LIS2MDL  mag;
 Adafruit_BMP3XX   bmp;
-Bmi088Accel       bmi_accel; // BMI088 is effectively two sensors in one.
-Bmi088Gyro        bmi_gyro;
+
+// #ifdef PCB_JEM
+//   Bmi088Accel       bmi_accel; // BMI088 is effectively two sensors in one.
+//   Bmi088Gyro        bmi_gyro;
+// #endif
 
 BatteryVoltage adcVolt(ADC_VOLTAGE, 134.33333f, 12, 7.0f); // Below 7 volts is considered low battery
 
@@ -76,12 +79,12 @@ SensorDataHandler yMagData(MAGNETOMETER_Y, &dataSaver);
 SensorDataHandler zMagData(MAGNETOMETER_Z, &dataSaver);
 
 // PCB JEM-exclusive sensors
-#if defined(PCB_JEM)
-SensorDataHandler xAclDataBMI(26, &dataSaver);
+// #if defined(PCB_JEM)
+// SensorDataHandler xAclDataBMI(, &dataSaver);
 
 
 
-#endif
+// #endif
 
 SensorDataHandler superLoopRate(AVERAGE_CYCLE_RATE, &dataSaver);
 

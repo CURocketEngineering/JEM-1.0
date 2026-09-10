@@ -18,6 +18,7 @@
 
 #define BUZZER_PIN PA1
 #define ADC_VOLTAGE PA0 // double check this one
+#define DEBUG_LED PA9
 
 // For the Adafruit SPI Flash
 #define EXTERNAL_FLASH_USE_CS PB5
@@ -58,7 +59,6 @@
 #define LED_RED PE_12
 #define LED_GREEN PE_13
 #define LED_BLUE PE_14
-#define DEBUG_LED PE_12 // Reusing definition in order to allow us to more greatly use old MARTHA code
 
 #endif // end JEM
 
