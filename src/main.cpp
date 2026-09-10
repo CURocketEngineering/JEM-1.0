@@ -13,9 +13,9 @@
 #endif
 
 // if we are a PCB JEM, otherwise just using martha stuff
-// #ifdef PCB_JEM
-//   // #include "Bolder_BMI088"
-// #endif
+#ifdef PCB_JEM
+  #include "BMI088.h"
+#endif
 
 #include <Adafruit_Sensor.h>
 #include "pins.h"
@@ -48,6 +48,8 @@ uint32_t start_time_s = 0;
 Adafruit_LSM6DSOX sox;
 Adafruit_LIS2MDL  mag;
 Adafruit_BMP3XX   bmp;
+Bmi088Accel       bmi_accel; // BMI088 is effectively two sensors in one.
+Bmi088Gyro        bmi_gyro;
 
 BatteryVoltage adcVolt(ADC_VOLTAGE, 134.33333f, 12, 7.0f); // Below 7 volts is considered low battery
 
@@ -72,6 +74,14 @@ DataPoint altDataPoint;
 SensorDataHandler xMagData(MAGNETOMETER_X, &dataSaver);
 SensorDataHandler yMagData(MAGNETOMETER_Y, &dataSaver);
 SensorDataHandler zMagData(MAGNETOMETER_Z, &dataSaver);
+
+// PCB JEM-exclusive sensors
+#if defined(PCB_JEM)
+SensorDataHandler xAclDataBMI(26, &dataSaver);
+
+
+
+#endif
 
 SensorDataHandler superLoopRate(AVERAGE_CYCLE_RATE, &dataSaver);
 

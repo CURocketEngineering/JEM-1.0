@@ -25,7 +25,7 @@
 
 #endif // end PCB_MARTHA
 
-#ifdef BB_MARTHA
+#ifdef BB_JEM
 
 #define SENSOR_MISO PB4 
 #define SENSOR_MOSI PB5
