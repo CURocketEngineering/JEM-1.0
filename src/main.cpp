@@ -15,6 +15,7 @@
 // if we are a PCB JEM, otherwise just using martha stuff
 #ifdef PCB_JEM
   #include "BMI088.h"
+  #include "MS5607.h"
 #endif
 
 #include <Adafruit_Sensor.h>
@@ -59,7 +60,7 @@ DataSaverSPI dataSaver(10, &flash); // Save data every 10 ms
   Bmi088Accel bmi_accel(SPI, SENSOR_BMI_A_CS);
   Bmi088Gyro bmi_gyro(SPI, SENSOR_BMI_G_CS);
 
-  
+  MS5607 ms5_pressure;
 
 #endif
 
@@ -91,6 +92,10 @@ SensorDataHandler zMagData(CURE_MAGNETOMETER_Z, &dataSaver);
   SensorDataHandler xGryoDataBMI(CURE_BMI_GYRO_X, &dataSaver);
   SensorDataHandler yGyroDataBMI(CURE_BMI_GYRO_Y, &dataSaver);
   SensorDataHandler zGyroDataBMI(CURE_BMI_GYRO_Z, &dataSaver);  
+
+  SensorDataHandler MS5PressureData(CURE_MS5_PRESSURE, &dataSaver);
+  SensorDataHandler MS5TempData(CURE_MS5_TEMP, &dataSaver);
+  SensorDataHandler MS5AltitudeData(CURE_MS5_ALTITUDE, &dataSaver);
 #endif
 
 SensorDataHandler superLoopRate(CURE_AVERAGE_CYCLE_RATE, &dataSaver);
