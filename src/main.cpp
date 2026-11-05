@@ -49,60 +49,67 @@ Adafruit_LSM6DSOX sox;
 Adafruit_LIS2MDL  mag;
 Adafruit_BMP3XX   bmp;
 
-// #ifdef PCB_JEM
-//   Bmi088Accel       bmi_accel; // BMI088 is effectively two sensors in one.
-//   Bmi088Gyro        bmi_gyro;
-// #endif
-
 BatteryVoltage adcVolt(ADC_VOLTAGE, 134.33333f, 12, 7.0f); // Below 7 volts is considered low battery
 
 Adafruit_SPIFlash flash(&flashTransport);
 DataSaverSPI dataSaver(10, &flash); // Save data every 10 ms
 
-SensorDataHandler xAclData(ACCELEROMETER_X, &dataSaver);
-SensorDataHandler yAclData(ACCELEROMETER_Y, &dataSaver);
-SensorDataHandler zAclData(ACCELEROMETER_Z, &dataSaver);
+#ifdef PCB_JEM // initialize JEM sensors
+  // no way this works, 100% this breaks on an actual PCB - Thomas
+  Bmi088Accel bmi_accel(SPI, SENSOR_BMI_A_CS);
+  Bmi088Gyro bmi_gyro(SPI, SENSOR_BMI_G_CS);
 
-SensorDataHandler xGyroData(GYROSCOPE_X, &dataSaver);
-SensorDataHandler yGyroData(GYROSCOPE_Y, &dataSaver);
-SensorDataHandler zGyroData(GYROSCOPE_Z, &dataSaver);
+  
 
-SensorDataHandler voltageData(BATTERY_VOLTAGE, &dataSaver);
+#endif
 
-SensorDataHandler tempData(TEMPERATURE, &dataSaver);
-SensorDataHandler pressureData(PRESSURE, &dataSaver);
-SensorDataHandler altitudeData(ALTITUDE, &dataSaver);
+SensorDataHandler xAclData(CURE_ACCELEROMETER_X, &dataSaver);
+SensorDataHandler yAclData(CURE_ACCELEROMETER_Y, &dataSaver);
+SensorDataHandler zAclData(CURE_ACCELEROMETER_Z, &dataSaver);
+
+SensorDataHandler xGyroData(CURE_GYROSCOPE_X, &dataSaver);
+SensorDataHandler yGyroData(CURE_GYROSCOPE_Y, &dataSaver);
+SensorDataHandler zGyroData(CURE_GYROSCOPE_Z, &dataSaver);
+
+SensorDataHandler voltageData(CURE_BATTERY_VOLTAGE, &dataSaver);
+
+SensorDataHandler tempData(CURE_TEMPERATURE, &dataSaver);
+SensorDataHandler pressureData(CURE_PRESSURE, &dataSaver);
+SensorDataHandler altitudeData(CURE_ALTITUDE, &dataSaver);
 DataPoint altDataPoint;
 
-SensorDataHandler xMagData(MAGNETOMETER_X, &dataSaver);
-SensorDataHandler yMagData(MAGNETOMETER_Y, &dataSaver);
-SensorDataHandler zMagData(MAGNETOMETER_Z, &dataSaver);
+SensorDataHandler xMagData(CURE_MAGNETOMETER_X, &dataSaver);
+SensorDataHandler yMagData(CURE_MAGNETOMETER_Y, &dataSaver);
+SensorDataHandler zMagData(CURE_MAGNETOMETER_Z, &dataSaver);
 
-// PCB JEM-exclusive sensors
-// #if defined(PCB_JEM)
-// SensorDataHandler xAclDataBMI(, &dataSaver);
+// JEM-exclusive: SensorData Handler 
+#ifdef PCB_JEM
+  // BMI088
+  SensorDataHandler xAclDataBMI(CURE_BMI_ACCEL_X, &dataSaver);
+  SensorDataHandler yAclDataBMI(CURE_BMI_ACCEL_Y, &dataSaver);
+  SensorDataHandler zAclDataBMI(CURE_BMI_ACCEL_Z, &dataSaver);
+  SensorDataHandler xGryoDataBMI(CURE_BMI_GYRO_X, &dataSaver);
+  SensorDataHandler yGyroDataBMI(CURE_BMI_GYRO_Y, &dataSaver);
+  SensorDataHandler zGyroDataBMI(CURE_BMI_GYRO_Z, &dataSaver);  
+#endif
 
+SensorDataHandler superLoopRate(CURE_AVERAGE_CYCLE_RATE, &dataSaver);
 
-
-// #endif
-
-SensorDataHandler superLoopRate(AVERAGE_CYCLE_RATE, &dataSaver);
-
-SensorDataHandler stateChange(STATE_CHANGE, &dataSaver);
-SensorDataHandler currentState(CURRENT_STATE, &dataSaver);
-SensorDataHandler flightIDSaver(FLIGHT_ID, &dataSaver);
+SensorDataHandler stateChange(CURE_STATE_CHANGE, &dataSaver);
+SensorDataHandler currentState(CURE_CURRENT_STATE, &dataSaver);
+SensorDataHandler flightIDSaver(CURE_FLIGHT_ID, &dataSaver);
 float flightID;
 
 //Orientation Estimation
-SensorDataHandler rollData(ROLL, &dataSaver);
-SensorDataHandler pitchData(PITCH, &dataSaver);
-SensorDataHandler yawData(YAW, &dataSaver);
+SensorDataHandler rollData(CURE_ROLL, &dataSaver);
+SensorDataHandler pitchData(CURE_PITCH, &dataSaver);
+SensorDataHandler yawData(CURE_YAW, &dataSaver);
 OrientationEstimator orientationEstimator;
 
 NoiseVariances noiseVariances {0.25f, 1.0f}; // Example variances
 
 VerticalVelocityEstimator verticalVelocityEstimator(noiseVariances);
-SensorDataHandler estVerticalVelocity(EST_VERTICAL_VELOCITY, &dataSaver);
+SensorDataHandler estVerticalVelocity(CURE_EST_VERTICAL_VELOCITY, &dataSaver);
 
 LaunchDetector launchDetector(40, 500, 25);
 FastLaunchDetector fastLaunchDetector(30, 500);
@@ -110,7 +117,7 @@ ApogeeDetector apogeeDetector(1.0f);
 GroundLevelEstimator groundLevelEstimator(0.1f);
 
 ApogeePredictor apogeePredictor(verticalVelocityEstimator);
-SensorDataHandler apogeeEstData(EST_APOGEE, &dataSaver);
+SensorDataHandler apogeeEstData(CURE_EST_APOGEE, &dataSaver);
 
 StateMachine stateMachine(&dataSaver, &launchDetector, &apogeeDetector, &verticalVelocityEstimator, &fastLaunchDetector);
 
@@ -118,6 +125,11 @@ const std::array<SensorDataHandler*, 3> acclDataArray = {&xAclData, &yAclData, &
 const std::array<SensorDataHandler*, 3> gyroDataArray = {&xGyroData, &yGyroData, &zGyroData};
 const std::array<SensorDataHandler*, 3> magDataArray = {&xMagData, &yMagData, &zMagData};
 const std::array<SensorDataHandler*, 3> orientationDataArray = {&rollData, &pitchData, &yawData};
+
+#ifdef PCB_JEM
+  const std::array<SensorDataHandler*, 3> acclDataArrayBMI = {&xAclDataBMI, &yAclDataBMI, &zAclDataBMI};
+  const std::array<SensorDataHandler*, 3> gyroDataArrayBMI = {&xGryoDataBMI, &yGyroDataBMI, &zGyroDataBMI};
+#endif
 
 SendableSensorData aclDataSSD(acclDataArray, 102, 5);
 SendableSensorData gyroDataSSD(gyroDataArray, 105, 5);
